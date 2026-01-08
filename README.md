@@ -4,7 +4,7 @@
   <p>A feature-rich Discord clone built with Next.js, Socket.io, Prisma, and Tailwind CSS.</p>
 </div>
 
-## ✨ Features
+## 🌟 Features
 
 -   **Real-time Messaging**: Socket.io powered chat.
 -   **Servers & Channels**: Create and customize servers and channels (Text,
@@ -28,7 +28,7 @@
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ErArbazAnsari/discord-fullstack.git
 cd discord-fullstack
 ```
 
@@ -40,28 +40,16 @@ npm install
 
 ### 3. Setup Environment Variables
 
-Create a `.env` file in the root directory and add the following keys:
-
-```env
-DATABASE_URL=
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
-UPLOADTHING_SECRET=
-UPLOADTHING_APP_ID=
-LIVEKIT_API_KEY=
-LIVEKIT_API_SECRET=
-NEXT_PUBLIC_LIVEKIT_URL=
-```
+Create a `.env` file in the root directory and refer to `.env.example` for the
+required keys. (VERY IMPORTANT)
 
 ### 4. Setup Database
 
 ```bash
-npx prisma generate
-npx prisma db push
+bun install
+bun prisma generate
+bun prisma db push
+bun run build
 ```
 
 ### 5. Run the application
