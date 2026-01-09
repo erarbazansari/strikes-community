@@ -1,7 +1,5 @@
 "use client"
 
-import React from 'react'
-
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useModal } from '@/hooks/use-mode-store'
 import { Label } from '../ui/label'

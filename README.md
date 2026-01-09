@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/logo/256-mac.png" alt="Logo" width="100" height="100">
-  <h1>Fullstack Discord Clone</h1>
-  <p>A feature-rich Discord clone built with Next.js, Socket.io, Prisma, and Tailwind CSS.</p>
+  <h1>Strikes Community</h1>
+  <p>A feature-rich strikes community built with Next.js, Socket.io, Prisma, and Tailwind CSS.</p>
 </div>
 
 ## 🌟 Features
@@ -16,7 +16,7 @@
 
 ## 🛠️ Tech Stack
 
--   **Framework**: Next.js 16 (App Router)
+-   **Framework**: Next.js 16
 -   **Language**: TypeScript
 -   **Database**: PostgreSQL (Prisma ORM)
 -   **Styling**: Tailwind CSS & Shadcn/ui

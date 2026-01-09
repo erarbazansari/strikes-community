@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
     req: Request,
-    { params }: { params: Promise<{ memberId: string }> }
+    { params }: { params: Promise<{ memberId: string }> },
 ) {
     try {
         const profile = await CurrentProfile();
@@ -65,7 +65,7 @@ export async function PATCH(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: Promise<{ memberId: string }> }
+    { params }: { params: Promise<{ memberId: string }> },
 ) {
     try {
         const { memberId } = await params;
@@ -82,7 +82,6 @@ export async function DELETE(
             return new NextResponse("unauthorize", { status: 401 });
         }
 
-        
         if (!memberId)
             return new NextResponse("member id required", { status: 400 });
 

@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexus | Platform for conversation",
-  description: "Nexus is great for conversations and chilling with friends, or even building a worldwide community. Customize your own space to talk, play, and hang out.",
+  title: "Strikes - Community",
+  description: "Strikes community application is a great for conversations and chilling with friends, or even building a worldwide community. Customize your own space to talk, play, and hang out.",
 };
 
 export default function RootLayout({

@@ -20,7 +20,7 @@ const ServerSection = ({ label, role, sectionType, channelType, server }: Server
             <p className='text-xs uppercase font-semibold'>{label}</p>
             {role !== MemberRole.GUEST && sectionType === "channels" && (
                 <ActionTooltip label='Create Channel' side='top'>
-                    <button onClick={() => onOpen("createChannel", {channelType})}><Plus className='h-4 w-4' /></button>
+                    <button onClick={() => onOpen("createChannel", { channelType })}><Plus className='h-4 w-4' /></button>
                 </ActionTooltip>
             )}
             {role == MemberRole.ADMIN && sectionType === "members" && (

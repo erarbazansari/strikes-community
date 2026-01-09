@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
     req: Request,
-    { params }: { params: Promise<{ channelId: string }> }
+    { params }: { params: Promise<{ channelId: string }> },
 ) {
     try {
         const profile = await CurrentProfile();
@@ -54,7 +54,7 @@ export async function DELETE(
 
 export async function PATCH(
     req: Request,
-    { params }: { params: Promise<{ channelId: string }> }
+    { params }: { params: Promise<{ channelId: string }> },
 ) {
     try {
         const profile = await CurrentProfile();
