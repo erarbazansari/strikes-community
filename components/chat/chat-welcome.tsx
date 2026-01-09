@@ -12,7 +12,7 @@ const ChatWelcome = ({ type, name }: { type: "channel" | "conversation", name: s
     return (
         <div className='flex flex-col items-center justify-center space-y-4 px-6 py-8'>
             <div className='h-20 w-20 rounded-full bg-card flex items-center justify-center shadow-sm'>
-                {isChannel ? <Hash className='h-12 w-12 text-primary' /> : <User className='h-12 w-12 text-white' />}
+                {isChannel ? <Hash className='h-12 w-12 text-primary' /> : <User className='h-12 w-12 text-primary' />}
             </div>
 
             <p className='text-lg md:text-2xl font-semibold text-center'>{title}</p>
