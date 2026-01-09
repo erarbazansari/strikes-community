@@ -44,7 +44,7 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
 
     return (
         <LiveKitRoom
-            data-lk-theme="default"
+            data-lk-theme="default" // we can set this light and dark.
             serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
             token={token}
             connect={true}

@@ -13,8 +13,8 @@ const NavigationAction = () => {
                 className='group flex items-center'
                 aria-label="Add a server"
             >
-                <div className='flex h-12 w-12 rounded-[24px] group-hover:rounded-xl transition-all overflow-hidden items-center justify-center bg-card border border-primary/10 group-hover:bg-emerald-500 active:scale-95'>
-                    <Plus className='group-hover:text-white transition text-emerald-500' size={25} />
+                <div className='flex h-12 w-12 rounded-[24px] group-hover:rounded-xl transition-all overflow-hidden items-center justify-center bg-primary-color border border-primary/10 group-hover:bg-primary-color active:scale-95'>
+                    <Plus className='transition text-white' size={25} />
                 </div>
             </button>
         </ActionTooltip>

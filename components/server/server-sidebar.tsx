@@ -1,26 +1,21 @@
 import { CurrentProfile } from '@/lib/current-profile'
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { ChannelType, MemberRole } from '@/lib/generated/prisma/enums';
+import { ChannelType } from '@/lib/generated/prisma/enums';
 import ServerHeader from './server-header';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { HashIcon, ShieldAlert, ShieldCheck, Video, Volume2 } from 'lucide-react';
+import { HashIcon, Video, Volume2 } from 'lucide-react';
 import ServerSearch from './server-search';
 import ServerSection from './server-section';
 import ServerChannel from './server-channel';
 import ServerMember from './server-member';
+import { roleIconMap } from '@/constants/roleIconMap';
 
 const iconMap = {
     [ChannelType.AUDIO]: <Volume2 className='mr-2 h-4 w-4' />,
     [ChannelType.TEXT]: <HashIcon className='mr-2 h-4 w-4' />,
     [ChannelType.VIDEO]: <Video className='mr-2 h-4 w-4' />
-}
-
-const roleIconMap = {
-    [MemberRole.GUEST]: null,
-    [MemberRole.MODERATOR]: <ShieldCheck className='h-4 w-4 mr-2 text-green-400' />,
-    [MemberRole.ADMIN]: <ShieldAlert className='h-4 w-4 mr-2 text-rose-500' />
 }
 
 const ServerSidebar = async ({ serverId }: { serverId: string }) => {
@@ -67,9 +62,8 @@ const ServerSidebar = async ({ serverId }: { serverId: string }) => {
     const textChannels = server.channels.filter((channel) => channel.type === ChannelType.TEXT)
     const audioChannels = server.channels.filter((channel) => channel.type === ChannelType.AUDIO)
     const videoChannels = server.channels.filter((channel) => channel.type === ChannelType.VIDEO)
-    const members = server.members.filter((user) => user.id != profile.id)
+    const members = server.members.filter((user) => user.profileId !== profile.id)
     const role = server.members.find((member) => member.profileId === profile.id)?.role
-
     return (
         <div className='flex flex-col h-full text-primary w-full bg-secondary border-r'>
             <ServerHeader server={server} role={userMember?.role} />
@@ -173,6 +167,7 @@ const ServerSidebar = async ({ serverId }: { serverId: string }) => {
                         </>
                     )}
                 </div>
+
                 <div className='mt-2'>
                     {!!members && members.length > 0 && (
                         <>

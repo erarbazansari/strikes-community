@@ -28,7 +28,7 @@ const ServerMember = ({ member, server }: ServerMemberProps) => {
             <UserAvatar src={member.profile.imageUrl} />
 
             <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-foreground">{member.profile.name}</p>
+                <p className="truncate font-medium text-foreground" title={member.profile.name}>{member.profile.name.length > 10 ? member.profile.name.slice(0, 10) + "..." : member.profile.name}</p>
             </div>
 
             {icon && (
