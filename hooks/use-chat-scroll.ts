@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 type ChatScrollProps = {
     chatRef: React.RefObject<HTMLDivElement>;
     bottomRef: React.RefObject<HTMLDivElement>;
+    topRef?: React.RefObject<HTMLDivElement>; // Added for intersection observer
     shouldLoadMore: boolean;
     loadMore: () => void;
     count: number;
@@ -11,6 +12,7 @@ type ChatScrollProps = {
 export const useChatScroll = ({
     chatRef,
     bottomRef,
+    topRef,
     shouldLoadMore,
     loadMore,
     count,
@@ -18,19 +20,26 @@ export const useChatScroll = ({
     const [hasInitialized, setHasInitialized] = useState(false);
 
     useEffect(() => {
-        const topDiv = chatRef?.current;
-        const handleScroll = () => {
-            const scrollTop = topDiv?.scrollTop;
+        const topDiv = topRef?.current;
 
-            if (scrollTop === 0 && shouldLoadMore) {
+        if (!topDiv || !shouldLoadMore) return;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
                 loadMore();
             }
-        };
-        topDiv?.addEventListener("scroll", handleScroll);
+        }, {
+            root: chatRef.current,
+            threshold: 0.1,
+            rootMargin: "100px 0px 0px 0px" // Trigger slightly before it comes into view
+        });
+
+        observer.observe(topDiv);
+
         return () => {
-            topDiv?.removeEventListener("scroll", handleScroll);
+            observer.disconnect();
         };
-    }, [shouldLoadMore, loadMore, chatRef]);
+    }, [shouldLoadMore, loadMore, chatRef, topRef]);
 
     useEffect(() => {
         const bottomDiv = bottomRef?.current;
