@@ -1,6 +1,6 @@
 import { useSocket } from "@/components/providers/socket-provider";
 import { Member, Message, Profile } from "@/lib/generated/prisma/client";
-import { useQueryClient } from "@tanstack/react-query";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 type ChatSocketProvider = {
@@ -28,11 +28,11 @@ export const useChatSocket = ({
             return;
         }
         socket.on(updateKey, (message: MessageWithMemberWithProfile) => {
-            queryClient.setQueryData([queryKey], (oldData: any) => {
+            queryClient.setQueryData([queryKey], (oldData: InfiniteData<{ items: MessageWithMemberWithProfile[] }> | undefined) => {
                 if (!oldData || !oldData.pages || oldData.pages.length === 0) {
                     return oldData;
                 }
-                const newData = oldData.pages.map((page: any) => {
+                const newData = oldData.pages.map((page) => {
                     return {
                         ...page,
                         items: page.items.map(
@@ -53,7 +53,7 @@ export const useChatSocket = ({
         });
 
         socket.on(addKey, (message: MessageWithMemberWithProfile) => {
-            queryClient.setQueryData([queryKey], (oldData: any) => {
+            queryClient.setQueryData([queryKey], (oldData: InfiniteData<{ items: MessageWithMemberWithProfile[] }> | undefined) => {
                 if (!oldData || !oldData.pages || oldData.pages.length === 0) {
                     return {
                         pages: [
