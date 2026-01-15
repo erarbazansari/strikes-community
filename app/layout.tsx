@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider"
 import { ClerkProviderWrapper } from "@/components/providers/clerk-provider-wrapper"
 import { Toaster } from "@/components/ui/sonner"
 
+export const dynamic = 'force-dynamic';
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
