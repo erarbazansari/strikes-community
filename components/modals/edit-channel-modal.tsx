@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Spinner } from '../ui/spinner'
 import { useModal } from '@/hooks/use-mode-store'
@@ -29,7 +29,6 @@ const formSchema = z.object({
 
 const EditChannelModal = () => {
     const router = useRouter()
-    const params = useParams()
 
     const { isOpen, onClose, type, data } = useModal()
     const { channel, server } = data;
