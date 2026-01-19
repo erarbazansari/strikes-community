@@ -94,7 +94,7 @@ export default function Home() {
                   <Link href={`/setup`}>
                     <Button size="lg" className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 rounded-full shadow-lg shadow-primary/25 w-full sm:w-auto">
                       <LayoutDashboard className="mr-2 h-5 w-5" />
-                      Go to Dashboard
+                      Go to profile
                     </Button>
                   </Link>
                 </SignedIn>
@@ -265,7 +265,7 @@ export default function Home() {
                 <Link href={`/setup`}>
                   <Button size="lg" className="h-14 px-10 text-xl bg-primary text-primary-foreground hover:bg-primary/90 rounded-full shadow-xl shadow-primary/20">
                     <LayoutDashboard className="mr-2 h-6 w-6" />
-                    Go to Dashboard
+                    Go to profile 
                   </Button>
                 </Link>
               </SignedIn>

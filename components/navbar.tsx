@@ -32,7 +32,7 @@ export const Navbar = () => {
                     <SignedIn>
                         <Link href={`/setup`}>
                             <Button variant="default" size="sm" className="hover:scale-105 transition-transform">
-                                Dashboard
+                               Profile 
                             </Button>
                         </Link>
                         <UserButton />
