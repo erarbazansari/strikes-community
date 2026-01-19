@@ -1,0 +1,1 @@
+https://www.notion.so/arbazansari/Strikes-Community-Architecture-2e623f37737480f79067ea159894c7cb?source=copy_link
