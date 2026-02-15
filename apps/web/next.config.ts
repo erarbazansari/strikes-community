@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     /* config options here */
+    distDir: process.env.DIST_DIR || ".next",
     output: "standalone",
     reactCompiler: true,
     transpilePackages: ["@repo/db", "@repo/kafka", "@repo/redis"],

@@ -67,65 +67,125 @@ services:
         volumes:
             - postgres:/var/lib/postgresql/data
 
-    # app:
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #     container_name: strikes-community-app
-    #     restart: always
-    #     env_file: .env
-    #     environment:
-    #         DATABASE_URL: "postgresql://postgres:password@postgres:5432/strikes-community"
-    #         REDIS_URL: "redis://redis:6379"
-    #         REDIS_CACHE_URL: "redis://redis-cache:6379"
-    #         KAFKA_BROKER: "kafka:29092"
-    #         KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
-    #         NEXT_PUBLIC_SOCKET_URL: "http://localhost"
-    #         NEXT_PUBLIC_SITE_URL: "http://localhost"
-    #         NODE_ENV: "development"
-    #     ports:
-    #         - "3000:3000"
-    #     volumes:
-    #         - .:/app
-    #         - /app/node_modules
-    #     depends_on:
-    #         - postgres
-    #         - redis
-    #         - redis-cache
-    #         - kafka
+    web-1:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: strikes-community-web-1
+        restart: always
+        env_file: .env
+        command: bun turbo dev --filter=@repo/web
+        environment:
+            DATABASE_URL: "postgresql://postgres:password@postgres:5432/strikes-community"
+            REDIS_URL: "redis://redis:6379"
+            REDIS_CACHE_URL: "redis://redis-cache:6379"
+            KAFKA_BROKER: "kafka:29092"
+            KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+            NEXT_PUBLIC_SOCKET_URL: "http://localhost"
+            NEXT_PUBLIC_SITE_URL: "http://localhost"
+            NODE_ENV: "development"
+            PORT: 3000
+            DIST_DIR: ".next_web_1"
+        ports:
+            - "3000"
+        volumes:
+            - .:/app
+            - /app/node_modules
+        depends_on:
+            - postgres
+            - redis
+            - redis-cache
+            - kafka
 
-    # socket-server:
-    #     build:
-    #         context: .
-    #         dockerfile: apps/socket-server/Dockerfile
-    #     container_name: strikes-community-socket
-    #     restart: always
-    #     env_file: .env
-    #     environment:
-    #         DATABASE_URL: "postgresql://postgres:password@postgres:5432/strikes-community"
-    #         REDIS_URL: "redis://redis:6379"
-    #         SOCKET_PORT: 3001
-    #         NEXT_PUBLIC_SITE_URL: "http://localhost"
-    #         KAFKA_BROKER: "kafka:29092"
-    #         KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
-    #         NODE_ENV: "production"
-    #     ports:
-    #         - "3001:3001"
-    #     depends_on:
-    #         - postgres
-    #         - redis
-    #         - kafka
+    web-2:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: strikes-community-web-2
+        restart: always
+        env_file: .env
+        command: bun turbo dev --filter=@repo/web
+        environment:
+            DATABASE_URL: "postgresql://postgres:password@postgres:5432/strikes-community"
+            REDIS_URL: "redis://redis:6379"
+            REDIS_CACHE_URL: "redis://redis-cache:6379"
+            KAFKA_BROKER: "kafka:29092"
+            KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+            NEXT_PUBLIC_SOCKET_URL: "http://localhost"
+            NEXT_PUBLIC_SITE_URL: "http://localhost"
+            NODE_ENV: "development"
+            PORT: 3000
+            DIST_DIR: ".next_web_2"
+        ports:
+            - "3000"
+        volumes:
+            - .:/app
+            - /app/node_modules
+        depends_on:
+            - postgres
+            - redis
+            - redis-cache
+            - kafka
 
-    # nginx:
-    #     image: nginx:1.25-alpine
-    #     depends_on:
-    #         - app
-    #         - socket-server
-    #     restart: always
-    #     ports:
-    #         - "80:80"
-    #     volumes:
-    #         - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    socket-server:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: strikes-community-socket
+        restart: always
+        env_file: .env
+        command: bun turbo dev --filter=@repo/socket-server
+        environment:
+            DATABASE_URL: "postgresql://postgres:password@postgres:5432/strikes-community"
+            REDIS_URL: "redis://redis:6379"
+            SOCKET_PORT: 3001
+            NEXT_PUBLIC_SITE_URL: "http://localhost"
+            KAFKA_BROKER: "kafka:29092"
+            KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+            NODE_ENV: "development"
+        ports:
+            - "3001:3001"
+        volumes:
+            - .:/app
+            - /app/node_modules
+        depends_on:
+            - postgres
+            - redis
+            - kafka
+
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: strikes-community-worker
+        restart: always
+        env_file: .env
+        command: bun turbo dev --filter=@repo/worker
+        environment:
+            DATABASE_URL: "postgresql://postgres:password@postgres:5432/strikes-community"
+            REDIS_URL: "redis://redis:6379"
+            KAFKA_BROKER: "kafka:29092"
+            KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+            NODE_ENV: "development"
+        volumes:
+            - .:/app
+            - /app/node_modules
+        depends_on:
+            - postgres
+            - redis
+            - kafka
+
+    nginx:
+        image: nginx:1.25-alpine
+        depends_on:
+            - web-1
+            - web-2
+            - socket-server
+        restart: always
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
 
 volumes:
     postgres:
