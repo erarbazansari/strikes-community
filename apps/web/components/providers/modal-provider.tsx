@@ -13,6 +13,7 @@ import MembersModal from "../modals/members-modal";
 import MessageFileModal from "../modals/message-file-modal";
 import { IncomingCallModal } from "../modals/incoming-call-modal";
 import { OutgoingCallModal } from "../modals/outgoing-call-modal";
+import UpdateAiInfo from "../modals/update-ai-infromation";
 
 export const ModalProvider = () => {
     return (
@@ -30,6 +31,7 @@ export const ModalProvider = () => {
             <DeleteMessageModal />
             <IncomingCallModal />
             <OutgoingCallModal />
+            <UpdateAiInfo />
         </>
     );
 };

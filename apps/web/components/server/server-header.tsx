@@ -76,6 +76,15 @@ const ServerHeader = ({
                         <PlusCircle className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
+                {isModerator && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen("update-ai-info")}
+                        className="px-3 py-2 text-sm cursor-pointer hover:bg-accent"
+                    >
+                        Update AI Information
+                        <PlusCircle className="h-4 w-4 ml-auto" />
+                    </DropdownMenuItem>
+                )}
                 {isModerator && <DropdownMenuSeparator />}
                 {isAdmin && (
                     <DropdownMenuItem

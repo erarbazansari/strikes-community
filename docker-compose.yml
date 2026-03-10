@@ -67,6 +67,18 @@ services:
         volumes:
             - postgres:/var/lib/postgresql/data
 
+    postgres-vector:
+        image: pgvector/pgvector:pg17
+        container_name: postgres-vector-db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: strikes-community-vector
+        ports:
+            - "5433:5432"
+        volumes:
+            - postgres-vector:/var/lib/postgresql/data
+
     # app:
     #     build:
     #         context: .
@@ -134,3 +146,4 @@ volumes:
     kafka:
     zookeeper-data:
     zookeeper-log:
+    postgres-vector:

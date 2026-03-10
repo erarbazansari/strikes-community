@@ -25,8 +25,74 @@ export const ChatAI = () => {
         },
     ]);
     const [input, setInput] = useState("");
-
     const [isLoading, setIsLoading] = useState(false);
+    const [isListening, setIsListening] = useState(false);
+    const recognitionRef = useRef<any>(null);
+    const originalInputRef = useRef("");
+
+    const startListening = () => {
+        if (
+            "webkitSpeechRecognition" in window ||
+            "SpeechRecognition" in window
+        ) {
+            // Store current input to append to
+            originalInputRef.current = input;
+
+            const SpeechRecognition =
+                (window as any).SpeechRecognition ||
+                (window as any).webkitSpeechRecognition;
+            recognitionRef.current = new SpeechRecognition();
+            recognitionRef.current.continuous = false;
+            recognitionRef.current.interimResults = true;
+            recognitionRef.current.lang = "en-IN";
+
+            recognitionRef.current.onstart = () => {
+                setIsListening(true);
+            };
+
+            recognitionRef.current.onresult = (event: any) => {
+                const transcript = Array.from(event.results)
+                    .map((result: any) => result[0])
+                    .map((result) => result.transcript)
+                    .join("");
+
+                const previous = originalInputRef.current;
+                const combinedInput = previous
+                    ? `${previous} ${transcript}`
+                    : transcript;
+
+                setInput(combinedInput);
+            };
+
+            recognitionRef.current.onerror = (event: any) => {
+                console.error("Speech recognition error", event.error);
+                setIsListening(false);
+            };
+
+            recognitionRef.current.onend = () => {
+                setIsListening(false);
+            };
+
+            recognitionRef.current.start();
+        } else {
+            alert("Speech recognition is not supported in this browser.");
+        }
+    };
+
+    const stopListening = () => {
+        if (recognitionRef.current) {
+            recognitionRef.current.stop();
+            setIsListening(false);
+        }
+    };
+
+    const toggleListening = () => {
+        if (isListening) {
+            stopListening();
+        } else {
+            startListening();
+        }
+    };
     const scrollRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll to bottom on message updates
@@ -35,6 +101,14 @@ export const ChatAI = () => {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages]);
+
+    useEffect(() => {
+        return () => {
+            if (recognitionRef.current) {
+                recognitionRef.current.stop();
+            }
+        };
+    }, []);
 
     const handleSend = async () => {
         if (!input.trim() || isLoading) return;
@@ -93,9 +167,9 @@ export const ChatAI = () => {
                                 prev.map((msg) =>
                                     msg.id === aiMessageId
                                         ? {
-                                              ...msg,
-                                              content: accumulatedContent,
-                                          }
+                                            ...msg,
+                                            content: accumulatedContent,
+                                        }
                                         : msg,
                                 ),
                             );
@@ -174,7 +248,7 @@ export const ChatAI = () => {
                                     )}
                                 >
                                     {message.role === "ai" &&
-                                    message.content === "" ? (
+                                        message.content === "" ? (
                                         <div className="flex gap-1.5 py-1">
                                             <span
                                                 className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce"
@@ -209,7 +283,7 @@ export const ChatAI = () => {
                                                             const match =
                                                                 /language-(\w+)/.exec(
                                                                     className ||
-                                                                        "",
+                                                                    "",
                                                                 );
                                                             return !inline &&
                                                                 match ? (
@@ -266,8 +340,21 @@ export const ChatAI = () => {
                 <div className="max-w-4xl mx-auto">
                     <div className="relative group bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl p-2 transition-all focus-within:ring-2 focus-within:ring-primary-color/40 focus-within:shadow-lg focus-within:shadow-primary-color/10 border border-zinc-200 dark:border-zinc-800 shadow-xl">
                         <div className="flex items-center gap-x-3">
-                            <button className="p-3 text-zinc-500 hover:text-primary-color hover:bg-primary-color/10 rounded-xl transition-all">
-                                <Mic className="w-5 h-5" />
+                            <button
+                                onClick={toggleListening}
+                                className={cn(
+                                    "p-3 rounded-xl transition-all",
+                                    isListening
+                                        ? "bg-red-500/10 text-red-500 hover:bg-red-500/20"
+                                        : "text-zinc-500 hover:text-primary-color hover:bg-primary-color/10",
+                                )}
+                            >
+                                <Mic
+                                    className={cn(
+                                        "w-5 h-5",
+                                        isListening && "animate-pulse",
+                                    )}
+                                />
                             </button>
                             <input
                                 value={input}
