@@ -6,17 +6,19 @@ import InitialModal from "@/components/modals/initial-modal";
 const Setup = async () => {
     const profile = await initialProfile();
 
-    const server = await prisma.server.findFirst({
+    // Optimized: Query Member table directly and only fetch serverId
+    // This is much faster than the nested query on Server
+    const member = await prisma.member.findFirst({
         where: {
-            members: {
-                some: {
-                    profileId: profile.id,
-                },
-            },
+            profileId: profile.id,
+        },
+        select: {
+            serverId: true,
         },
     });
-    if (server) {
-        return redirect(`/servers/${server.id}`);
+
+    if (member) {
+        return redirect(`/servers/${member.serverId}`);
     }
 
     return <InitialModal />;
