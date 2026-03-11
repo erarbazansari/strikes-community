@@ -9,18 +9,13 @@ export const initialProfile = async () => {
         return redirect("/sign-in");
     }
 
-    const profile = await prisma.profile.findUnique({
+    // Use upsert to reduce database queries from 2 to 1
+    const profile = await prisma.profile.upsert({
         where: {
             userId: user.id,
         },
-    });
-
-    if (profile) {
-        return profile;
-    }
-
-    const newProfile = await prisma.profile.create({
-        data: {
+        update: {},
+        create: {
             userId: user.id,
             email: user.emailAddresses[0].emailAddress,
             name: `${user.firstName} ${user.lastName}`,
@@ -28,5 +23,5 @@ export const initialProfile = async () => {
         },
     });
 
-    return newProfile;
+    return profile;
 };

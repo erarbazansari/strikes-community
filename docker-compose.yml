@@ -21,6 +21,18 @@ services:
         volumes:
             - kafka:/var/lib/kafka/data
 
+    kafka-ui:
+        image: provectuslabs/kafka-ui:latest
+        container_name: kafka-ui
+        restart: unless-stopped
+        ports:
+            - "8080:8080"
+        environment:
+            KAFKA_CLUSTERS_0_NAME: local
+            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+        depends_on:
+            - kafka
+
     redis:
         image: redis:alpine
         container_name: redis-session-manager
